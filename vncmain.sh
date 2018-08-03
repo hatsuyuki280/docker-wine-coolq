@@ -17,6 +17,16 @@ while true; do
     echo "[CQDaemon] CoolQ exited, maybe updated."
     echo "[CQDaemon] Searching for the new process ..."
     sleep 3
+    
+    ########
+    ## 暂行的，当酷Q出现莫名奇妙的崩溃对话框时，自动杀掉进程，以便自动重启
+    xwininfo -root -tree | grep -E '酷Q Pro [0-1.]+' && {
+        echo '出现了崩溃信息对话框，杀掉重启'
+        wineserver -k
+    }
+    sleep 10
+    ########
+    
     cqpid=$(ps x | grep $cqexe | head -n 1 | awk '{print $1}')
     if [ "$cqpid" == "" ]; then
         echo "[CQDaemon] No CoolQ process found, start new process ..."
